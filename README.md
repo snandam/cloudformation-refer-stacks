@@ -25,7 +25,7 @@ aws cloudformation create-stack --stack-name  "stack1-test" --template-body file
 
 ## Step 3:
 
-- Obtain the lambda function ARN from the output ![stackoutput](assets/stackoutput.png)
+- Obtain the lambda function ARN from the output ![stackoutput](assets/stackoutput.png) of LookupStackOutput stack you created in step 1 
 - Update params/stack2.json with the name of the stack you want to refer and the lambda function ARN
 - Run stack2.json that obtains the name of the s3 bucket from stack 1 and apply policy
 
