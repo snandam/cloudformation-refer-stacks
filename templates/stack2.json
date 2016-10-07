@@ -1,0 +1,55 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Configure a website for web hosting",
+    "Parameters": {
+        "CFNStackName": {
+            "Description": "Name of an active CloudFormation stack that contains the networking resources, such as the subnet and security group, that will be used in this stack.",
+            "Type": "String"
+        },
+        "StackOutputLambda": {
+            "Description": "Lambda function to use to refer to output from another cloudformation stack",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "StackReference": {
+            "Type": "Custom::NetworkInfo",
+            "Properties": {
+                "ServiceToken": {
+                    "Ref": "StackOutputLambda"
+                },
+                "StackName": {
+                    "Ref": "CFNStackName"
+                }
+            }
+        },
+
+        "S3BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Fn::GetAtt": ["StackReference", "S3Bucket"]
+                },
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{
+                        "Sid": "AddPerm",
+                        "Effect": "Allow",
+                        "Principal": "*",
+                        "Action": "s3:GetObject",
+                        "Resource": {
+                            "Fn::Join": [
+                                "", [
+                                    "arn:aws:s3:::", {
+                                          "Fn::GetAtt": ["StackReference", "S3Bucket"]
+                                    },
+                                    "/*"
+                                ]
+                            ]
+                        }
+                    }]
+                }
+            }
+        }
+    }
+}

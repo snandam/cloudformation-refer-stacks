@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "BucketName",
+    "ParameterValue": "cfn-s3-stackoutput-example08"
+  },
+  {
+    "ParameterKey": "Owner",
+    "ParameterValue": "example08"
+  },
+  {
+    "ParameterKey": "Application",
+    "ParameterValue": "cfn-s3-08"
+  }
+]
